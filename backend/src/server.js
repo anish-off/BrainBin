@@ -1,6 +1,6 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
 import path from "path";
 
 import notesRoutes from "./routes/notesRoutes.js";
@@ -13,15 +13,19 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
+// middleware
 if (process.env.NODE_ENV !== "production") {
-  app.use(cors({
-      origin: "http://localhost:5173",})
-    );
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+    })
+  );
 }
-app.use(express.json());
+app.use(express.json()); 
 app.use(rateLimiter);
 
-app.use("/api/notes",notesRoutes);
+
+app.use("/api/notes", notesRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -31,9 +35,8 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-connectDB().then( () =>{
-    app.listen(PORT, ()=>{
-        console.log("Server running on port:",PORT);
-        
-    });
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("Server started on PORT:", PORT);
+  });
 });
