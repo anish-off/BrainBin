@@ -24,13 +24,14 @@ const CreatePage = () => {
       toast.success("Note created successfully!");
       navigate("/");
     } catch (error) {
-      console.log("Error creating note :",error);
-      if (error.response.status === 429) {
-        toast.error("Slow down! You're creating note too fast", {duration:4000, icon:"💀"});
+      console.log("Error creating note :", error);
+      const status = error?.response?.status;
+      if (status === 429) {
+        toast.error("Slow down! You're creating note too fast", { duration: 4000, icon: "💀" });
       } else {
         toast.error("Failed to create note");
       }
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
